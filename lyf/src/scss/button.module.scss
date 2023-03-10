@@ -1,0 +1,42 @@
+:root {
+	--primary: white;
+}
+
+.btn {
+	padding: 8px 20px;
+	border-radius: 2px;
+	outline: none;
+	border: none;
+	cursor: pointer;
+}
+
+.btnPrimary {
+	background-color: lime;
+	color: #242424;
+	border: 1px solid lime;
+}
+
+.btnOutline {
+	background-color: transparent;
+	color: white;
+	padding: 8px 20px;
+	border: 1px solid lime;
+	transition: all 0.3s ease-out;
+}
+
+.btnMedium {
+	padding: 8px 20px;
+	font-size: 20px;
+}
+
+.btnLarge {
+	padding: 12px 20px;
+	font-size: 20px;
+}
+
+.btnMedium:hover,
+.btnLarge:hover {
+	background: white;
+	color: #242424;
+	transition: all 0.3s ease-out;
+}

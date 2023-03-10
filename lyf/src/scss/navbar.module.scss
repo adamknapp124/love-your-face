@@ -1,0 +1,56 @@
+.navbar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	background-color: rgba(255, 255, 255);
+	.navContainer {
+		height: 90px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		.nav {
+			position: absolute;
+			font-family: 'Tangerine', cursive;
+			font-weight: 700;
+			font-size: 30px;
+			display: flex;
+			height: 100%;
+			justify-content: space-between;
+			align-items: center;
+			gap: 15px;
+			.link {
+				text-decoration: none;
+				color: rgb(0, 0, 0);
+				transition: 0.2s ease-in;
+				&:hover {
+					color: rgb(103, 3, 50);
+					transform: scale(1.3);
+				}
+			}
+		}
+		.menuIcon {
+			color: rgb(0, 0, 0);
+			// height: 65px;
+		}
+		.logo {
+			margin: auto;
+			img {
+				height: 80px;
+			}
+		}
+		Button {
+			position: relative;
+			border: none;
+			.cartNotify {
+				position: absolute;
+				top: 0;
+				right: 12px;
+				width: 1.5rem;
+				height: 1.5rem;
+				border-radius: 200px;
+				background: red;
+				color: white;
+			}
+		}
+	}
+}
