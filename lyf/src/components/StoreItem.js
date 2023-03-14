@@ -20,8 +20,6 @@ export default function StoreItem(props) {
 	const cart = useContext(CartContext);
 	const productQuantity = cart.getProductQuantity(product.id);
 
-	console.log(cart.items);
-
 	return (
 		<Card
 			sx={{

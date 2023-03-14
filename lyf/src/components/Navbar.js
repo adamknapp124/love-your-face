@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
+import { CartContext } from '../CartContext';
 import { Modal } from 'react-bootstrap';
 import { Container } from '@mui/system';
 import { Button } from '@mui/material';
@@ -10,6 +11,7 @@ import cart from '../images/SVG/cart.svg';
 import logo from '../images/loveyou-logo.svg';
 
 export default function Navbar(props) {
+	const shoppingCart = useContext(CartContext);
 	const [dropdownMenu, setDropdownMenu] = useState(false);
 	const [show, setShow] = useState(false);
 
@@ -27,6 +29,11 @@ export default function Navbar(props) {
 			setDropdownMenu(false);
 		}
 	};
+
+	const productsCount = shoppingCart.items.reduce(
+		(sum, product) => sum + product.quantity,
+		0
+	);
 
 	window.addEventListener('resize', showBurgerMenu);
 
@@ -66,19 +73,21 @@ export default function Navbar(props) {
 							className={styles.cart}
 							variant="outlined">
 							<img src={cart} alt="" />
-							<div className={styles.cartNotify}>4</div>
+							<div className={styles.cartNotify}>{productsCount}</div>
 						</Button>
 					</div>
 				</Container>
 			</nav>
-			<Modal show={show} onHide={handleClose}>
-				<Modal.Header closeButton>
-					<Modal.Title>Shopping Cart</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<h1>This is the modal body</h1>
-				</Modal.Body>
-			</Modal>
+			<Container>
+				<Modal show={show} onHide={handleClose}>
+					<Modal.Header closeButton>
+						<Modal.Title>Shopping Cart</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>
+						<h1>This is the modal body</h1>
+					</Modal.Body>
+				</Modal>
+			</Container>
 		</>
 	);
 }
