@@ -1,8 +1,8 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { CartContext } from '../CartContext';
-import { Modal } from 'react-bootstrap';
+
 import { Container } from '@mui/system';
 import { Button } from '@mui/material';
 
@@ -11,15 +11,41 @@ import cart from '../images/SVG/cart.svg';
 import logo from '../images/loveyou-logo.svg';
 
 export default function Navbar(props) {
-	const shoppingCart = useContext(CartContext);
 	const [dropdownMenu, setDropdownMenu] = useState(false);
-	const [show, setShow] = useState(false);
+	const [wasDismissed, setWasDismissed] = useState(false);
+	const [width, setWidth] = useState(window.innerWidth);
+	const [cartClick, setCartClick] = useState(false);
+	const [click, setClick] = useState(false);
 
-	const handleClose = () => setShow(false);
-	const handleShow = () => setShow(true);
+	const closeMobileMenu = () => setClick(false);
+	const shoppingCart = useContext(CartContext);
+	const cartRef = useRef(null);
 
 	const handleClick = () => {
-		props.setClick(!props.click);
+		console.log('clicked');
+		setClick(!click);
+	};
+
+	const handleCartToggleClick = () => {
+		console.log(cartClick + ' handleCartToggle');
+		if (wasDismissed) {
+			setWasDismissed(false);
+			return;
+		}
+		setCartClick(true);
+	};
+
+	const handleClickOutsideCart = (event) => {
+		console.log('handleClick');
+		if (
+			cartRef.current &&
+			cartClick &&
+			!cartRef.current.contains(event.target)
+		) {
+			setWasDismissed(true);
+			console.log('about to set cart click');
+			setCartClick(false);
+		}
 	};
 
 	const showBurgerMenu = () => {
@@ -29,6 +55,31 @@ export default function Navbar(props) {
 			setDropdownMenu(false);
 		}
 	};
+
+	useEffect(() => {
+		console.log('useEffect');
+		document.addEventListener('mousedown', handleClickOutsideCart);
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutsideCart);
+		};
+	});
+
+	useEffect(() => {
+		console.log('Burger use effect');
+		showBurgerMenu();
+	}, []);
+
+	useEffect(() => {
+		console.log('resize use effect');
+		const handleResize = () => setWidth(window.innerWidth);
+		window.addEventListener('resize', handleResize);
+		if (width > 960) {
+			setClick(false);
+		}
+		return () => {
+			window.removeEventListener('resize', handleResize);
+		};
+	}, [width]);
 
 	const productsCount = shoppingCart.items.reduce(
 		(sum, product) => sum + product.quantity,
@@ -65,12 +116,12 @@ export default function Navbar(props) {
 						)}
 						<div className={styles.logo}>
 							<NavLink to="/" className={styles.logo}>
-								<img src={logo} alt="" />{' '}
+								<img src={logo} alt="" />
 							</NavLink>
 						</div>
 						<Button
-							onClick={handleShow}
-							className={styles.cart}
+							onClick={handleCartToggleClick}
+							className={styles.cartToggleButton}
 							variant="outlined">
 							<img src={cart} alt="" />
 							<div className={styles.cartNotify}>{productsCount}</div>
@@ -78,16 +129,53 @@ export default function Navbar(props) {
 					</div>
 				</Container>
 			</nav>
-			<Container>
-				<Modal show={show} onHide={handleClose}>
-					<Modal.Header closeButton>
-						<Modal.Title>Shopping Cart</Modal.Title>
-					</Modal.Header>
-					<Modal.Body>
-						<h1>This is the modal body</h1>
-					</Modal.Body>
-				</Modal>
-			</Container>
+			{cartClick && (
+				<div
+					ref={cartRef}
+					className={cartClick ? styles.cartActive : styles.cartInactive}>
+					<div className={styles.shoppingCart}>
+						<h1>Shopping Cart</h1>
+					</div>
+				</div>
+			)}
+			{click && (
+				<div className={click && width ? styles.active : styles.inactive}>
+					<ul>
+						<li className={styles.navItem}>
+							<NavLink
+								to="/"
+								className={styles.navLinks}
+								onClick={closeMobileMenu}>
+								Home
+							</NavLink>
+						</li>
+						<li className={styles.navItem}>
+							<NavLink
+								to="/about"
+								className={styles.navLinks}
+								onClick={closeMobileMenu}>
+								About
+							</NavLink>
+						</li>
+						<li className={styles.navItem}>
+							<NavLink
+								to="/services"
+								className={styles.navLinks}
+								onClick={closeMobileMenu}>
+								Services
+							</NavLink>
+						</li>
+						<li className={styles.navItem}>
+							<NavLink
+								to="/schedule"
+								className={styles.navLinks}
+								onClick={closeMobileMenu}>
+								Schedule
+							</NavLink>
+						</li>
+					</ul>
+				</div>
+			)}
 		</>
 	);
 }
