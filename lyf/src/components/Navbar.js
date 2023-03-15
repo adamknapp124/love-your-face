@@ -22,12 +22,10 @@ export default function Navbar(props) {
 	const cartRef = useRef(null);
 
 	const handleClick = () => {
-		console.log('clicked');
 		setClick(!click);
 	};
 
 	const handleCartToggleClick = () => {
-		console.log(cartClick + ' handleCartToggle');
 		if (wasDismissed) {
 			setWasDismissed(false);
 			return;
@@ -36,14 +34,12 @@ export default function Navbar(props) {
 	};
 
 	const handleClickOutsideCart = (event) => {
-		console.log('handleClick');
 		if (
 			cartRef.current &&
 			cartClick &&
 			!cartRef.current.contains(event.target)
 		) {
 			setWasDismissed(true);
-			console.log('about to set cart click');
 			setCartClick(false);
 		}
 	};
@@ -57,7 +53,6 @@ export default function Navbar(props) {
 	};
 
 	useEffect(() => {
-		console.log('useEffect');
 		document.addEventListener('mousedown', handleClickOutsideCart);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutsideCart);
@@ -65,12 +60,10 @@ export default function Navbar(props) {
 	});
 
 	useEffect(() => {
-		console.log('Burger use effect');
 		showBurgerMenu();
 	}, []);
 
 	useEffect(() => {
-		console.log('resize use effect');
 		const handleResize = () => setWidth(window.innerWidth);
 		window.addEventListener('resize', handleResize);
 		if (width > 960) {
