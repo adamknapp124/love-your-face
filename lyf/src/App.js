@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useRef, lazy } from 'react';
+import React, { lazy } from 'react';
 
 import styles from './scss/app.module.scss';
 import './App.css';
 
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import Navbar from './components/Navbar';
 import CartProvider from './CartContext';
