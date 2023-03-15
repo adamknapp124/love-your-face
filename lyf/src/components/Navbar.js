@@ -12,7 +12,6 @@ import logo from '../images/loveyou-logo.svg';
 
 export default function Navbar(props) {
 	const [dropdownMenu, setDropdownMenu] = useState(false);
-	const [wasDismissed, setWasDismissed] = useState(false);
 	const [width, setWidth] = useState(window.innerWidth);
 	const [cartClick, setCartClick] = useState(false);
 	const [click, setClick] = useState(false);
@@ -20,27 +19,51 @@ export default function Navbar(props) {
 	const closeMobileMenu = () => setClick(false);
 	const shoppingCart = useContext(CartContext);
 	const cartRef = useRef(null);
+	const navRef = useRef(null);
+	const buttonReference = document.getElementById('toggle-button');
+	const svcReference = document.getElementById('svcReference');
+	const redBlobReference = document.getElementById('redBlobReference');
+
+	const hamburger = document.getElementById('hamburger');
+	const hamburgerIcon = document.getElementById('hamburger-icon');
 
 	const handleClick = () => {
 		setClick(!click);
 	};
 
 	const handleCartToggleClick = () => {
-		if (wasDismissed) {
-			setWasDismissed(false);
+		console.log('handleCartToggle');
+		if (cartRef.current) {
+			setCartClick(false);
 			return;
 		}
 		setCartClick(true);
 	};
 
 	const handleClickOutsideCart = (event) => {
+		// represents panel opened or closed
+		console.log(event.target !== redBlobReference);
+		console.log(event.target);
+		console.log(cartRef.current);
+
 		if (
 			cartRef.current &&
-			cartClick &&
-			!cartRef.current.contains(event.target)
+			event.target !== svcReference &&
+			event.target !== redBlobReference &&
+			event.target !== buttonReference &&
+			event.target !== cartRef.current
 		) {
-			setWasDismissed(true);
 			setCartClick(false);
+		}
+	};
+	const handleClickOutsideNav = (event) => {
+		if (
+			navRef.current &&
+			event.target !== hamburger &&
+			event.target !== hamburgerIcon &&
+			event.target !== navRef.current
+		) {
+			setClick(false);
 		}
 	};
 
@@ -54,8 +77,10 @@ export default function Navbar(props) {
 
 	useEffect(() => {
 		document.addEventListener('mousedown', handleClickOutsideCart);
+		document.addEventListener('mousedown', handleClickOutsideNav);
 		return () => {
 			document.removeEventListener('mousedown', handleClickOutsideCart);
+			document.removeEventListener('mousedown', handleClickOutsideNav);
 		};
 	});
 
@@ -103,8 +128,14 @@ export default function Navbar(props) {
 							</div>
 						)}
 						{dropdownMenu && (
-							<div className={styles.menuIcon} onClick={handleClick}>
-								<i className={props.click ? 'fas fa-times' : 'fas fa-bars'} />
+							<div
+								id="hamburger"
+								className={styles.menuIcon}
+								onClick={handleClick}>
+								<i
+									id="hamburger-icon"
+									className={props.click ? 'fas fa-times' : 'fas fa-bars'}
+								/>
 							</div>
 						)}
 						<div className={styles.logo}>
@@ -113,11 +144,14 @@ export default function Navbar(props) {
 							</NavLink>
 						</div>
 						<Button
+							id="toggle-button"
 							onClick={handleCartToggleClick}
-							className={styles.cartToggleButton}
+							className={styles.toggleButton}
 							variant="outlined">
-							<img src={cart} alt="" />
-							<div className={styles.cartNotify}>{productsCount}</div>
+							<img id="svcReference" src={cart} alt="" />
+							<div id="redBlobReference" className={styles.cartNotify}>
+								{productsCount}
+							</div>
 						</Button>
 					</div>
 				</Container>
@@ -132,7 +166,9 @@ export default function Navbar(props) {
 				</div>
 			)}
 			{click && (
-				<div className={click && width ? styles.active : styles.inactive}>
+				<div
+					ref={navRef}
+					className={click && width ? styles.active : styles.inactive}>
 					<ul>
 						<li className={styles.navItem}>
 							<NavLink
