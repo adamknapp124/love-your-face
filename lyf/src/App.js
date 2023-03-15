@@ -1,10 +1,11 @@
-import React, { lazy } from 'react';
+import React, { useState, useEffect, useRef, lazy } from 'react';
 
 import styles from './scss/app.module.scss';
 import './App.css';
 
-import { Routes, Route } from 'react-router-dom';
-import Header from './components/Navbar';
+import { Routes, Route, NavLink } from 'react-router-dom';
+
+import Navbar from './components/Navbar';
 import CartProvider from './CartContext';
 const Home = lazy(() => import('./pages/Home'));
 const About = lazy(() => import('./pages/About'));
@@ -17,7 +18,7 @@ function App() {
 	return (
 		<CartProvider>
 			<div className={styles.app}>
-				<Header />
+				<Navbar />
 				<Routes>
 					<Route path="/" element={<Home />} />
 					<Route path="/about" element={<About />} />

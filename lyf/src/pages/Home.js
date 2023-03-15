@@ -1,30 +1,14 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import React from 'react';
 
 import { Container } from '@mui/system';
 
-import Navbar from '../components/Navbar';
 import Services from '../components/Services';
 
 import styles from '../scss/home.module.scss';
 
 export default function Home() {
-	const [click, setClick] = useState(false);
-	const [width, setWidth] = useState(window.innerWidth);
-
-	const closeMobileMenu = () => setClick(false);
-
-	useEffect(() => {
-		const handleResize = () => setWidth(window.innerWidth);
-		window.addEventListener('resize', handleResize);
-		if (width > 960) {
-			setClick(false);
-		}
-	}, [width]);
-
 	return (
 		<div className={styles.homepage}>
-			<Navbar click={click} setClick={setClick} />
 			<main className={styles.content}>
 				<Container>
 					<div className={styles.mainContent}>
@@ -100,42 +84,6 @@ export default function Home() {
 						</div>
 					</div>
 				</Container>
-				<div className={click && width ? styles.active : styles.inactive}>
-					<ul>
-						<li className={styles.navItem}>
-							<NavLink
-								to="/"
-								className={styles.navLinks}
-								onClick={closeMobileMenu}>
-								Home
-							</NavLink>
-						</li>
-						<li className={styles.navItem}>
-							<NavLink
-								to="/about"
-								className={styles.navLinks}
-								onClick={closeMobileMenu}>
-								About
-							</NavLink>
-						</li>
-						<li className={styles.navItem}>
-							<NavLink
-								to="/services"
-								className={styles.navLinks}
-								onClick={closeMobileMenu}>
-								Services
-							</NavLink>
-						</li>
-						<li className={styles.navItem}>
-							<NavLink
-								to="/schedule"
-								className={styles.navLinks}
-								onClick={closeMobileMenu}>
-								Schedule
-							</NavLink>
-						</li>
-					</ul>
-				</div>
 			</main>
 		</div>
 	);
