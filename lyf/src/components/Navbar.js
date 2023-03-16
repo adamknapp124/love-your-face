@@ -1,7 +1,14 @@
-import React, { useState, useEffect, useRef, useContext } from 'react';
+import React, {
+	useState,
+	useEffect,
+	useRef,
+	useCallback,
+	useContext,
+} from 'react';
 import { NavLink } from 'react-router-dom';
 
 import { CartContext } from '../CartContext';
+import CartProduct from './CartProducts';
 
 import { Container } from '@mui/system';
 import { Button } from '@mui/material';
@@ -20,12 +27,8 @@ export default function Navbar(props) {
 	const shoppingCart = useContext(CartContext);
 	const cartRef = useRef(null);
 	const navRef = useRef(null);
-	const buttonReference = document.getElementById('toggle-button');
-	const svcReference = document.getElementById('svcReference');
-	const redBlobReference = document.getElementById('redBlobReference');
-
-	const hamburger = document.getElementById('hamburger');
-	const hamburgerIcon = document.getElementById('hamburger-icon');
+	const buttonRef = useRef(null);
+	const hamburgerRef = useRef(null);
 
 	const handleClick = () => {
 		setClick(!click);
@@ -40,32 +43,33 @@ export default function Navbar(props) {
 		setCartClick(true);
 	};
 
-	const handleClickOutsideCart = (event) => {
-		// represents panel opened or closed
-		console.log(event.target !== redBlobReference);
-		console.log(event.target);
-		console.log(cartRef.current);
+	const handleClickOutsideCart = useCallback(
+		(event) => {
+			if (
+				cartRef.current &&
+				!cartRef.current.contains(event.target) &&
+				event.target !== buttonRef.current &&
+				event.target !== cartRef.current
+			) {
+				console.log(event.target);
+				setCartClick(false);
+			}
+		},
+		[cartRef, buttonRef]
+	);
 
-		if (
-			cartRef.current &&
-			event.target !== svcReference &&
-			event.target !== redBlobReference &&
-			event.target !== buttonReference &&
-			event.target !== cartRef.current
-		) {
-			setCartClick(false);
-		}
-	};
-	const handleClickOutsideNav = (event) => {
-		if (
-			navRef.current &&
-			event.target !== hamburger &&
-			event.target !== hamburgerIcon &&
-			event.target !== navRef.current
-		) {
-			setClick(false);
-		}
-	};
+	const handleClickOutsideNav = useCallback(
+		(event) => {
+			if (
+				navRef.current &&
+				event.target !== hamburgerRef.current &&
+				event.target !== navRef.current
+			) {
+				setClick(false);
+			}
+		},
+		[navRef, hamburgerRef]
+	);
 
 	const showBurgerMenu = () => {
 		if (window.innerWidth <= 960) {
@@ -75,29 +79,39 @@ export default function Navbar(props) {
 		}
 	};
 
-	useEffect(() => {
-		document.addEventListener('mousedown', handleClickOutsideCart);
-		document.addEventListener('mousedown', handleClickOutsideNav);
-		return () => {
-			document.removeEventListener('mousedown', handleClickOutsideCart);
-			document.removeEventListener('mousedown', handleClickOutsideNav);
-		};
-	});
-
-	useEffect(() => {
-		showBurgerMenu();
-	}, []);
+	const checkout = async () => {
+		await fetch('http://localhost:4000/checkout', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({ items: shoppingCart.items }),
+		})
+			.then((response) => {
+				return response.json();
+			})
+			.then((response) => {
+				if (response.url) {
+					window.location.assign(response.url);
+				}
+			});
+	};
 
 	useEffect(() => {
 		const handleResize = () => setWidth(window.innerWidth);
 		window.addEventListener('resize', handleResize);
+		document.addEventListener('mousedown', handleClickOutsideCart);
+		document.addEventListener('mousedown', handleClickOutsideNav);
+		showBurgerMenu();
 		if (width > 960) {
 			setClick(false);
 		}
 		return () => {
+			document.removeEventListener('mousedown', handleClickOutsideNav);
+			document.removeEventListener('mousedown', handleClickOutsideCart);
 			window.removeEventListener('resize', handleResize);
 		};
-	}, [width]);
+	}, [width, handleClickOutsideCart, handleClickOutsideNav]);
 
 	const productsCount = shoppingCart.items.reduce(
 		(sum, product) => sum + product.quantity,
@@ -129,13 +143,10 @@ export default function Navbar(props) {
 						)}
 						{dropdownMenu && (
 							<div
-								id="hamburger"
+								ref={hamburgerRef}
 								className={styles.menuIcon}
 								onClick={handleClick}>
-								<i
-									id="hamburger-icon"
-									className={props.click ? 'fas fa-times' : 'fas fa-bars'}
-								/>
+								<i className={props.click ? 'fas fa-times' : 'fas fa-bars'} />
 							</div>
 						)}
 						<div className={styles.logo}>
@@ -144,14 +155,14 @@ export default function Navbar(props) {
 							</NavLink>
 						</div>
 						<Button
-							id="toggle-button"
+							ref={buttonRef}
 							onClick={handleCartToggleClick}
 							className={styles.toggleButton}
 							variant="outlined">
-							<img id="svcReference" src={cart} alt="" />
-							<div id="redBlobReference" className={styles.cartNotify}>
-								{productsCount}
-							</div>
+							<img src={cart} alt="" />
+							{productsCount > 0 && (
+								<div className={styles.cartNotify}>{productsCount}</div>
+							)}
 						</Button>
 					</div>
 				</Container>
@@ -161,7 +172,27 @@ export default function Navbar(props) {
 					ref={cartRef}
 					className={cartClick ? styles.cartActive : styles.cartInactive}>
 					<div className={styles.shoppingCart}>
-						<h1>Shopping Cart</h1>
+						<h1 className={styles.cartHeader}>Shopping Cart</h1>
+						<hr></hr>
+						{productsCount > 0 ? (
+							<>
+								{shoppingCart.items.map((currentProduct, idx) => (
+									<CartProduct
+										key={idx}
+										id={currentProduct.id}
+										quantity={currentProduct.quantity}
+									/>
+								))}
+
+								<h1>Total: {shoppingCart.getTotalCost().toFixed(2)}</h1>
+
+								<Button variant="outlined" onClick={checkout}>
+									Checkout
+								</Button>
+							</>
+						) : (
+							<h1>there are no items in your cart</h1>
+						)}
 					</div>
 				</div>
 			)}
