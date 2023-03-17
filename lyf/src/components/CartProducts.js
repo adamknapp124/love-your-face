@@ -14,6 +14,7 @@ export default function CartProduct(props) {
 			<h3>{productData.name}</h3>
 			<p>{quantity} total</p>
 			<p>${(quantity * productData.price).toFixed(2)}</p>
+			{/* <img src={product.imgUrl} alt="" /> */}
 			<Button variant="outlined" onClick={() => cart.deleteFromCart(id)}>
 				Remove
 			</Button>
