@@ -13,6 +13,7 @@ const Store = lazy(() => import('./pages/Store'));
 const Success = lazy(() => import('./pages/Success'));
 const Cancel = lazy(() => import('./pages/Cancel'));
 const Cart = lazy(() => import('./pages/Cart'));
+const SingleItem = lazy(() => import('./components/SingleItem'));
 
 function App() {
 	return (
@@ -26,6 +27,7 @@ function App() {
 					<Route path="/success" element={<Success />} />
 					<Route path="/cancel" element={<Cancel />} />
 					<Route path="/cart" element={<Cart />} />
+					<Route path="/slug" element={<SingleItem />} />
 				</Routes>
 			</div>
 		</CartProvider>

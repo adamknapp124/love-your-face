@@ -1,6 +1,7 @@
 import React, {
 	useState,
 	useEffect,
+	useLayoutEffect,
 	useRef,
 	useCallback,
 	useContext,
@@ -102,7 +103,6 @@ export default function Navbar(props) {
 		window.addEventListener('resize', handleResize);
 		document.addEventListener('mousedown', handleClickOutsideCart);
 		document.addEventListener('mousedown', handleClickOutsideNav);
-		showBurgerMenu();
 		if (width > 960) {
 			setClick(false);
 		}
@@ -112,6 +112,10 @@ export default function Navbar(props) {
 			window.removeEventListener('resize', handleResize);
 		};
 	}, [width, handleClickOutsideCart, handleClickOutsideNav]);
+
+	useLayoutEffect(() => {
+		showBurgerMenu();
+	});
 
 	const productsCount = shoppingCart.items.reduce(
 		(sum, product) => sum + product.quantity,
