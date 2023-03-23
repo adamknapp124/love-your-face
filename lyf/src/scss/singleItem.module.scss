@@ -1,17 +1,24 @@
 .item {
 	margin-top: 100px;
-	// display: flex;
-	// align-items: stretch;
-	padding: 20px;
+	display: flex;
+	align-items: stretch;
+	color: white;
+	.imageBackdrop {
+		padding: 20px;
+		display: flex;
+		align-items: stretch;
+		background-color: rgba(15, 64, 0, 0.3);
+		border-radius: 20px;
+	}
 	.images {
+		display: flex;
+		align-items: stretch;
 		margin: auto;
 		height: min-content;
-		.imageBackdrop {
-			background-color: rgba(255, 255, 255, 0.5);
-		}
 		img {
 			margin: auto;
-			max-height: 400px;
+			display: flex;
+			width: 100%;
 		}
 	}
 }
