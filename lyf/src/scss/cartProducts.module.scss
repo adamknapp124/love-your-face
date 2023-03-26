@@ -1,0 +1,15 @@
+.info {
+	display: flex;
+	margin-bottom: 10px;
+	align-items: center;
+	gap: 30px;
+	.cartThumbnail {
+		height: 40px;
+		padding: 5px;
+		img {
+			height: 70px;
+		}
+	}
+	.itemDescription {
+	}
+}
