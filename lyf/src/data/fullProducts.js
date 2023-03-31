@@ -558,8 +558,7 @@ const productsArray = [
 		category: 'hand and body skincare',
 		name: 'VITAL C hydrating hand and body lotion',
 		price: 40,
-		imgUrl:
-			'https://cdn.shopify.com/s/files/1/0250/9661/8038/products/VITAL-C-HYDRATING-HAND-AND-BODY-LOTION-PDP-R01a_large.jpg',
+		imgUrl: 'https://photos.app.goo.gl/Sq7qXg8a6RaZxDCY8',
 	},
 	{
 		category: 'hand and body skincare',

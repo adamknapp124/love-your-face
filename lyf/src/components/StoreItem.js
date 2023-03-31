@@ -33,7 +33,7 @@ export default function StoreItem(props) {
 				<CardMedia
 					component="img"
 					height="140"
-					src={product.imgUrl}
+					src={product.imgUrl[0]}
 					alt={product.id}
 				/>
 				<CardContent>
