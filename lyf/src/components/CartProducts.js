@@ -5,8 +5,6 @@ import { getProductData } from '../data/products';
 
 import styles from '../scss/cartProducts.module.scss';
 
-import example from '../images/facial.jpg';
-
 export default function CartProduct(props) {
 	const cart = useContext(CartContext);
 	const id = props.id;

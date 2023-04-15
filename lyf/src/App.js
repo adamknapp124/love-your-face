@@ -13,6 +13,7 @@ const Store = lazy(() => import('./pages/Store'));
 const Success = lazy(() => import('./pages/Success'));
 const Cancel = lazy(() => import('./pages/Cancel'));
 const Cart = lazy(() => import('./pages/Cart'));
+const ServiceInfo = lazy(() => import('./pages/ServiceInfo'));
 const SingleItem = lazy(() => import('./components/SingleItem'));
 
 function App() {
@@ -27,7 +28,8 @@ function App() {
 					<Route path="/success" element={<Success />} />
 					<Route path="/cancel" element={<Cancel />} />
 					<Route path="/cart" element={<Cart />} />
-					<Route path="/slug" element={<SingleItem />} />
+					<Route path="/product/:slug" element={<SingleItem />} />
+					<Route path="/services/:pathString" element={<ServiceInfo />} />
 				</Routes>
 			</div>
 		</CartProvider>

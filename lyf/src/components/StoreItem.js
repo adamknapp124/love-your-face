@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { Link, NavLink } from 'react-router-dom';
+
 import formatCurrency from '../utilities/formatCurrency';
 import { CartContext } from '../CartContext';
 
@@ -22,6 +24,7 @@ export default function StoreItem(props) {
 
 	return (
 		<Card
+			className={styles.cards}
 			sx={{
 				maxWidth: 345,
 				height: 280,
@@ -29,26 +32,28 @@ export default function StoreItem(props) {
 				flexDirection: 'column',
 				justifyContent: 'space-between',
 			}}>
-			<CardActionArea>
-				<CardMedia
-					component="img"
-					height="140"
-					src={product.imgUrl[0]}
-					alt={product.id}
-				/>
-				<CardContent>
-					<Typography
-						gutterBottom
-						variant="small"
-						component="div"
-						className={styles.noWrap}>
-						{product.name}
-					</Typography>
-					<Typography variant="body2" color="text.secondary">
-						{formatCurrency(product.price)}
-					</Typography>
-				</CardContent>
-			</CardActionArea>
+			<NavLink to={`/product/${product.slug}`}>
+				<CardActionArea>
+					<CardMedia
+						component="img"
+						height="140"
+						src={product.imgUrl[0]}
+						alt={product.id}
+					/>
+					<CardContent>
+						<Typography
+							gutterBottom
+							variant="small"
+							component="div"
+							className={styles.noWrap}>
+							{product.name}
+						</Typography>
+						<Typography variant="body2" color="text.secondary">
+							{formatCurrency(product.price)}
+						</Typography>
+					</CardContent>
+				</CardActionArea>
+			</NavLink>
 			<CardActions
 				sx={{
 					display: 'flex',

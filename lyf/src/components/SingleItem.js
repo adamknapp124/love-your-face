@@ -1,38 +1,31 @@
 import React from 'react';
+import { useParams } from 'react-router-dom';
 
-import styles from '../scss/singleItem.module.scss';
-import example from '../images/facial.jpg';
+import formatCurrency from '../utilities/formatCurrency';
 
-import { Container } from '@mui/system';
-import { Grid } from '@mui/material';
+import { getProducts } from '../data/products';
+// import styles from '../scss/singleItem.module.scss';
 
-export default function SingleItem() {
+// import { Container } from '@mui/system';
+// import { Grid } from '@mui/material';
+
+export default function SingleItem(props) {
+	const { slug } = useParams();
+	const product = getProducts(slug);
+
+	if (!product) {
+		return <div>Product not found</div>;
+	}
+
 	return (
-		<Container>
-			<Grid container className={styles.item}>
-				<Grid container className={styles.imageBackdrop}>
-					<Grid item xs={12} md={6} className={styles.images}>
-						<img src={example} alt="" className={styles.image}></img>
-						<div className={styles.imageSplide}></div>
-					</Grid>
-					<Grid item xs={12} md={5} className={styles.purchaseInfo}>
-						<h1>BIOME+ cleansing comfort balm</h1>
-						<small>Size: 4 fl oz./118mL</small>
-						<div className={styles.reviews}>Reviews</div>
-						<div className={styles.purchaseOptions}>
-							<h3>One-time purchase</h3>
-							<h3>Subscribe and save</h3>
-						</div>
-						<div className={styles.quantity}>Quantity</div>
-						<button>Add To Cart</button>
-						<div className={styles.itemDescription}>
-							A skin-nourishing cleansing balm that melts away makeup, sunscreen
-							and impurities, with certified microbiome-friendly squalane and
-							plant oils
-						</div>
-					</Grid>
-				</Grid>
-			</Grid>
-		</Container>
+		<>
+			<div>{product.name}</div>
+			<div>
+				<img src={product.imgUrl[0]} alt=""></img>
+			</div>
+			<div>{product.description}</div>
+			<div>{product.category}</div>
+			<div>{formatCurrency(product.price)}</div>
+		</>
 	);
 }
