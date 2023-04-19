@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+// import { useParams } from 'react-router-dom';
 import { NavLink } from 'react-router-dom';
 
 import { Grid } from '@mui/material';
@@ -14,8 +15,12 @@ import lips from '../images/lips.jpg';
 import underarms from '../images/underarms.jpg';
 import facial from '../images/facial.jpg';
 
-export default function Services() {
+// import { getServices } from '../data/services';
+
+export default function Services(props) {
 	const [hoveredService, setHoveredService] = useState(null);
+	// const { identifier } = useParams();
+	// const service = getServices(identifier);
 
 	const handleMouseEnter = (serviceName) => {
 		setHoveredService(serviceName);
@@ -25,11 +30,11 @@ export default function Services() {
 		setHoveredService(null);
 	};
 
-	const getServiceCard = (serviceName, imageSource) => {
+	const getServiceCard = (serviceName, imageSource, serviceIdentifier) => {
 		return (
 			<Grid item xs={12} md={3} className={styles.serviceCard}>
 				<NavLink
-					to={`/services/${serviceName}`}
+					to={`/services/${serviceIdentifier}`}
 					onMouseEnter={() => handleMouseEnter(serviceName)}
 					onMouseLeave={handleMouseLeave}
 					className={styles.imageWrapper}>

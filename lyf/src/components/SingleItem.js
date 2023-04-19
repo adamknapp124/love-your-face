@@ -9,7 +9,7 @@ import { getProducts } from '../data/products';
 // import { Container } from '@mui/system';
 // import { Grid } from '@mui/material';
 
-export default function SingleItem(props) {
+export default function SingleItem() {
 	const { slug } = useParams();
 	const product = getProducts(slug);
 
