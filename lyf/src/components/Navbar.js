@@ -134,9 +134,6 @@ export default function Navbar(props) {
 								<NavLink to="/" className={styles.link}>
 									Home
 								</NavLink>
-								<NavLink to="/about" className={styles.link}>
-									About
-								</NavLink>
 								<NavLink to="/services" className={styles.link}>
 									Services
 								</NavLink>

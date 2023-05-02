@@ -1,23 +1,47 @@
 .homepage {
 	overflow-x: hidden;
+	.imageContainer {
+		margin-top: 90px;
+		position: relative;
+		width: auto;
+		max-height: 100%;
+		.hero {
+			display: flex;
+			background-image: url('../images/facial-highlight.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: center;
+			// border-radius: 20px;
+			// overflow: hidden;
+			width: 100%;
+			height: 100vh;
+			max-height: 750px;
+			transform: scaleX(-1);
+			// margin: 170px auto 20px auto;
+		}
+	}
+	.imageContainer::before {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		background: linear-gradient(
+			to right,
+			rgba(255, 255, 255, 0.95) 0%,
+			rgba(255, 255, 255, 0) 50%
+		);
+		z-index: 1;
+	}
 	.content {
 		display: flex;
-		.hero {
-			background-image: url('../images/fruit-middle.jpg');
-			background-size: cover;
-			background-repeat: norepeat;
-			background-position: center;
-			border-radius: 20px;
-			overflow: hidden;
-			height: 500px;
-			width: 80%;
-			margin: 170px auto 20px auto;
-		}
+		flex-direction: column;
 		.mainContent {
 			background: rgb(44, 89, 18, 0.1);
+			margin-top: 200px;
 			padding: 20px;
 			.bubble {
-				margin-top: 170px auto 170px auto;
 				background-color: rgb(255, 255, 255, 0.8);
 				font-family: 'Mulish', sans-serif;
 				padding: 30px;
